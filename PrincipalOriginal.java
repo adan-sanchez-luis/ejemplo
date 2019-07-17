@@ -134,6 +134,19 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         Eliminar.setForeground(Color.decode("#049cff"));
         Eliminar.setBounds(800, 498, 150, 50);
         Maquinas.add(Eliminar);
+	    
+	    
+	/////nuevo    
+	 JButton Autorizar = new JButton("Autorizar");
+        Autorizar.setBackground(Color.black);
+        Autorizar.setBorder(new ComponenteBotonRedondo(40));
+        Autorizar.setForeground(Color.decode("#049cff"));
+        Autorizar.setBounds(950, 498, 150, 50);
+        Maquinas.add(Autorizar);   
+	    
+	    
+	    
+	    
         return Maquinas;
 
     }
