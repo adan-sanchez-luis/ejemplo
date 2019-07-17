@@ -24,9 +24,7 @@ public class EditarObra extends JFrame {
 		setTitle("Editar obras");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		
-		
-
+	
 		JPanel DatosObras= new JPanel();
 		DatosObras.setLayout(null);
 		DatosObras.setSize(1366,384);
@@ -100,7 +98,7 @@ public class EditarObra extends JFrame {
 		ApellidoResponsableMaternotxtEditar.setBorder(null);
 		DatosObras.add(ApellidoResponsableMaternotxtEditar);
 		
-		JLabel TelefonoEditar = new JLabel("T閘efono del responsable:");
+		JLabel TelefonoEditar = new JLabel("T茅lefono del responsable:");
 		TelefonoEditar.setForeground(Color.white);
 		Font fuenteTelefono=new Font("Arial",Font.BOLD,14);
 		TelefonoEditar.setFont(fuenteTelefono);
@@ -114,7 +112,7 @@ public class EditarObra extends JFrame {
 		DatosObras.add(TelefonotxtEditar);
 		
 		
-		JLabel CorreoEditar = new JLabel("Correo electr髇ico del responsable:");
+		JLabel CorreoEditar = new JLabel("Correo electr贸nico del responsable:");
 		CorreoEditar.setForeground(Color.white);
 		Font fuenteCorreo=new Font("Arial",Font.BOLD,14);
 		CorreoEditar.setFont(fuenteCorreo);
@@ -186,7 +184,7 @@ public class EditarObra extends JFrame {
 		CalletxtEditar.setBorder(null);
 		DatosObras.add(CalletxtEditar);
 		
-		JLabel NumeroEditar= new JLabel("N鷐ero:");
+		JLabel NumeroEditar= new JLabel("N煤mero:");
 		NumeroEditar.setForeground(Color.white);
 		Font fontNumero=new Font("Arial",Font.BOLD,14);
 		NumeroEditar.setFont(fontNumero);
@@ -241,6 +239,23 @@ public class EditarObra extends JFrame {
 		EstadotxtEditar.setBorder(null);
 		DatosObras.add(EstadotxtEditar);
 		
+			///Agregado
+		
+		JLabel NombreObraEditar = new JLabel("Nombre de la obra:");
+	    NombreObraEditar.setForeground(Color.white);
+	    Font fontNObra = new Font("Arial",Font.BOLD,14);
+	    NombreObraEditar.setFont(fontNObra);
+	    NombreObraEditar.setBounds(1030,150,300,300);
+		DatosObras.add( NombreObraEditar);
+		
+		JTextField NombreObraEditartxt= new JTextField();
+		NombreObraEditartxt.setForeground(Color.black);
+		NombreObraEditartxt.setBounds(1170,288,150,30);
+	    NombreObraEditartxt.setBorder(null);
+	    DatosObras.add(NombreObraEditartxt);
+		
+		
+		
 		//////////////////////// Termina panel uno empieza panel 2: Datos Maquinaria
 		
 		JPanel DatosMaquinariaEditar=new JPanel();
@@ -293,7 +308,7 @@ public class EditarObra extends JFrame {
 		MaquinariaCEditar .setBorder(null);
 		DatosMaquinariaEditar.add(MaquinariaCEditar );
 		
-	    JLabel CantidadMaquinasEditar = new JLabel("Cantidad de m醧uinas para obra:");
+	    JLabel CantidadMaquinasEditar = new JLabel("Cantidad de m谩quinas para obra:");
 		CantidadMaquinasEditar.setForeground(Color.white);
 		Font fuenteCantidadMaquinas=new Font("Arial",Font.BOLD,14);
 		CantidadMaquinasEditar.setFont(fuenteCantidadMaquinas);
@@ -309,12 +324,12 @@ public class EditarObra extends JFrame {
 		
 	
 		
-		JButton AgregarInformaci髇Editar= new JButton("Agregar informaci髇");
-		AgregarInformaci髇Editar.setBackground(Color.decode("#049cff"));
-		AgregarInformaci髇Editar.setBounds(550,250,200,50);
-		AgregarInformaci髇Editar.setBorder(new ComponenteBotonRedondo(40));
-		AgregarInformaci髇Editar.setForeground(Color.black);
-		DatosMaquinariaEditar.add(AgregarInformaci髇Editar);
+		JButton AgregarInformaci贸nEditar= new JButton("Agregar informaci贸n");
+		AgregarInformaci贸nEditar.setBackground(Color.decode("#049cff"));
+		AgregarInformaci贸nEditar.setBounds(550,250,200,50);
+		AgregarInformaci贸nEditar.setBorder(new ComponenteBotonRedondo(40));
+		AgregarInformaci贸nEditar.setForeground(Color.black);
+		DatosMaquinariaEditar.add(AgregarInformaci贸nEditar);
 		
 		
 		
@@ -329,35 +344,19 @@ public class EditarObra extends JFrame {
 		background_image = new ImageIcon(temp_img);
 		
 		JLabel background = new JLabel("",background_image,JLabel.CENTER);
-	
-		
-		
-		
-	
+
 		background.add(DatosObras);
     	background.add(DatosMaquinariaEditar);
 
 		add(background );
 	
 		setVisible(true);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 	}
-	
-	
+
 	public static void main(String[]args){
 		
 		new EditarObra();
 	}
-	
-	
 
 }
