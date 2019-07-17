@@ -21,8 +21,6 @@ public class AgregarObra extends JFrame {
 		setTitle("Agregar obras");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		
-		
 
 		JPanel DatosObras= new JPanel();
 		DatosObras.setLayout(null);
@@ -99,7 +97,7 @@ public class AgregarObra extends JFrame {
 		
 		
 		//////////////////////////
-		JLabel Telefono = new JLabel("T閘efono del responsable:");
+		JLabel Telefono = new JLabel("T茅lefono del responsable:");
 		Telefono.setForeground(Color.white);
 		Font fuenteTelefono=new Font("Arial",Font.BOLD,14);
 		Telefono.setFont(fuenteTelefono);
@@ -113,7 +111,7 @@ public class AgregarObra extends JFrame {
 		DatosObras.add(Telefonotxt);
 		
 		
-		JLabel Correo = new JLabel("Correo electr髇ico del responsable:");
+		JLabel Correo = new JLabel("Correo electr贸nico del responsable:");
 		Correo.setForeground(Color.white);
 		Font fuenteCorreo=new Font("Arial",Font.BOLD,14);
 		Correo.setFont(fuenteCorreo);
@@ -187,7 +185,7 @@ public class AgregarObra extends JFrame {
 		Calletxt.setBorder(null);
 		DatosObras.add(Calletxt);
 		
-		JLabel Numero= new JLabel("N鷐ero:");
+		JLabel Numero= new JLabel("N煤mero:");
 		Numero.setForeground(Color.white);
 		Font fontNumero=new Font("Arial",Font.BOLD,14);
 		Numero.setFont(fontNumero);
@@ -242,6 +240,23 @@ public class AgregarObra extends JFrame {
 		Estadotxt.setBorder(null);
 		DatosObras.add(Estadotxt);
 		
+		///Agregado
+		
+		JLabel NombreObra = new JLabel("Nombre de la obra:");
+	    NombreObra.setForeground(Color.white);
+	    Font fontNObra = new Font("Arial",Font.BOLD,14);
+	    NombreObra.setFont(fontNObra);
+	    NombreObra.setBounds(1030,150,300,300);
+		DatosObras.add( NombreObra);
+		
+		JTextField NombreObrartxt= new JTextField();
+		NombreObrartxt.setForeground(Color.black);
+		NombreObrartxt.setBounds(1170,288,150,30);
+	    NombreObrartxt.setBorder(null);
+	    DatosObras.add(NombreObrartxt);
+		
+		
+		
 		//////////////////////// Termina panel uno empieza panel 2: Datos Maquinaria
 		
 		JPanel DatosMaquinaria=new JPanel();
@@ -294,7 +309,7 @@ public class AgregarObra extends JFrame {
 		MaquinariaC .setBorder(null);
 		DatosMaquinaria.add(MaquinariaC );
 		
-	    JLabel CantidadMaquinas = new JLabel("Cantidad de m醧uinas para obra:");
+	    JLabel CantidadMaquinas = new JLabel("Cantidad de m谩quinas para obra:");
 		CantidadMaquinas.setForeground(Color.white);
 		Font fuenteCantidadMaquinas=new Font("Arial",Font.BOLD,14);
 		CantidadMaquinas.setFont(fuenteCantidadMaquinas);
@@ -310,12 +325,12 @@ public class AgregarObra extends JFrame {
 		
 	
 		
-		JButton AgregarInformaci髇= new JButton("Guardar informaci髇");
-		AgregarInformaci髇.setBackground(Color.black);
-		AgregarInformaci髇.setBounds(550,250,200,50);
-		AgregarInformaci髇.setBorder(new ComponenteBotonRedondo(40));
-		AgregarInformaci髇.setForeground(Color.decode("#049cff"));
-		DatosMaquinaria.add(AgregarInformaci髇);
+		JButton AgregarInformaci贸n= new JButton("Guardar informaci贸n");
+		AgregarInformaci贸n.setBackground(Color.black);
+		AgregarInformaci贸n.setBounds(550,250,200,50);
+		AgregarInformaci贸n.setBorder(new ComponenteBotonRedondo(40));
+		AgregarInformaci贸n.setForeground(Color.decode("#049cff"));
+		DatosMaquinaria.add(AgregarInformaci贸n);
 		
 		
 		
