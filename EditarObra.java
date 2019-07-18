@@ -317,7 +317,7 @@ public class EditarObra extends JFrame {
         AgregarInformaciónEditar.setForeground(Color.black);
         DatosMaquinariaEditar.add(AgregarInformaciónEditar);
 
-        ImageIcon background_image = new ImageIcon("C:\\Users\\Adan Sanchez\\Documents\\NetBeansProjects\\Fun_Ing_Soft\\ejemplo\\Fun_Ing_Soft\\src\\neo4.jpg");
+        ImageIcon background_image = new ImageIcon("C:\\Users\\Adan Sanchez\\Documents\\NetBeansProjects\\Fun_Ing_Soft\\src\\neo4.jpg");
         Image img = background_image.getImage();
         Image temp_img = img.getScaledInstance(1366, 768, Image.SCALE_SMOOTH);
         background_image = new ImageIcon(temp_img);
