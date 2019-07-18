@@ -31,7 +31,7 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         principal.setBackground(Color.black);
         principal.setBounds(0, 115, 1366, 768);
 
-        ImageIcon background_image = new ImageIcon("C:\\Users\\Adan Sanchez\\Documents\\NetBeansProjects\\Fun_Ing_Soft\\src\\InterfacesConstructora\\neo3.jpg");
+        ImageIcon background_image = new ImageIcon("C:\\Users\\Adan Sanchez\\Documents\\NetBeansProjects\\Fun_Ing_Soft\\ejemplo\\Fun_Ing_Soft\\src\\neo3.jpg");
         Image img = background_image.getImage();
         Image temp_img = img.getScaledInstance(1366, 768, Image.SCALE_SMOOTH);
         background_image = new ImageIcon(temp_img);
