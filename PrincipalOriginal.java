@@ -92,7 +92,7 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         Maquinas.setBackground(Color.black);
 
         String[] Cabecera = {"NOMBRE", "TIPO", "MODELO", "COSTO", "ESTADO", "PRECIO DE RENTA"};
-        String[][] datos = {{"aj11", "Tractor", "2015", "$10000.00", "EN USO", "$4000.00"}};
+        String[][] datos = {{"aj11", "Tractor", "2015", "$10000.00", "DISPONIBLE", "$4000.00"}};
         DefaultTableModel modelo = new DefaultTableModel(datos, Cabecera) {
              //La edicion de la tabla esta desactivada
             public boolean isCellEditable(int rowIndex, int columnIndex) {
