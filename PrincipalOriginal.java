@@ -94,7 +94,7 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         String[] Cabecera = {"NOMBRE", "TIPO", "MODELO", "COSTO", "ESTADO", "PRECIO DE RENTA"};
         String[][] datos = {{"aj11", "Tractor", "2015", "$10000.00", "DISPONIBLE", "$4000.00"}};
         DefaultTableModel modelo = new DefaultTableModel(datos, Cabecera) {
-             //La edicion de la tabla esta desactivada
+            //La edicion de la tabla esta desactivada
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
             }
@@ -148,15 +148,15 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         Editar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                try{
-                int fila = MaquinasT.getSelectedRow();
-                String nombre = (String) MaquinasT.getValueAt(fila, 0);
-                String tipo = (String) MaquinasT.getValueAt(fila, 1);
-                int modelo = PrincipalOriginal.esNum((String) MaquinasT.getValueAt(fila, 2));
-                String estado = (String) MaquinasT.getValueAt(fila, 4);
-                float precioRenta = PrincipalOriginal.esFlo((String) MaquinasT.getValueAt(fila, 5));
-                new EditarMaquinaria(nombre, tipo, modelo, estado, precioRenta);
-                }catch(Exception e){
+                try {
+                    int fila = MaquinasT.getSelectedRow();
+                    String nombre = (String) MaquinasT.getValueAt(fila, 0);
+                    String tipo = (String) MaquinasT.getValueAt(fila, 1);
+                    int modelo = PrincipalOriginal.esNum((String) MaquinasT.getValueAt(fila, 2));
+                    String estado = (String) MaquinasT.getValueAt(fila, 4);
+                    float precioRenta = PrincipalOriginal.esFlo((String) MaquinasT.getValueAt(fila, 5));
+                    new EditarMaquinaria(nombre, tipo, modelo, estado, precioRenta);
+                } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Seleccione una maquina");
                 }
             }
@@ -201,7 +201,7 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         Obras.setBackground(Color.black);
 
         String[] Cabecera = {"NOMBRE DE LA OBRA", "NOMBRE DEL RESPONSABLE", "FECHA DE INICIO", "FECHA DE FINALIZACIÓN", "NÚMERO DEL RESPONSABLE", "INVERSIÓN $", "NOMBRE DE LA EMPRESA", "NUM DE MÁQUINAS RENTADAS"};
-        String[][] datos = {{"Carretera Esmeralda", "Juan de Dios", "01/02/16", "01/03/16", "9566162", "100,000", "Construcciones El chapo", "3"}};        
+        String[][] datos = {{"Carretera Esmeralda", "Juan de Dios", "01/02/16", "01/03/16", "9566162", "100,000", "Construcciones El chapo", "3"}};
         DefaultTableModel modelo = new DefaultTableModel(datos, Cabecera) {
             //La edicion de la tabla esta desactivada
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -214,7 +214,7 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         //La redimencion de las colunmas se desactiva
         OrasT.getTableHeader().setResizingAllowed(false);
         //Se Restinge la seleccion de las filas a solo una
-        OrasT.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
+        OrasT.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane sc = new JScrollPane(OrasT);
         sc.setVisible(true);
         sc.setBounds(10, 70, 1336, 410);

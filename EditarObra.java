@@ -24,7 +24,7 @@ public class EditarObra extends JFrame {
 
         setSize(1366, 768);
         setTitle("Editar obras");
-        //setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
 
         JPanel DatosObras = new JPanel();

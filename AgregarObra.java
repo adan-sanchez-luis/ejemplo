@@ -21,7 +21,7 @@ public class AgregarObra extends JFrame {
 
         setSize(1366, 768);
         setTitle("Agregar obras");
-        //setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
 
         JPanel DatosObras = new JPanel();
