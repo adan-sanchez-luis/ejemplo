@@ -20,7 +20,7 @@ public class EditarMaquinaria extends JFrame {
 
     public boolean confirmar;
 
-    EditarMaquinaria(String nombre, String tipo, int modelo, String estado, float precioRenta) {
+    EditarMaquinaria(String nombre, String tipo, int modelo, String estado, double precioRenta) {
 
         setSize(860, 500);
         setTitle("Editar maquinarias");
