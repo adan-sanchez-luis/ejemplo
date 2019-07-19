@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -257,7 +259,7 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         //abre una nueva ventana para editar la obra seleccionada 
         Editar.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent ae) {                
+            public void actionPerformed(ActionEvent ae) {
                 try {
                     int fila = OrasT.getSelectedRow();
                     String obra = (String) OrasT.getValueAt(fila, 0);
@@ -265,10 +267,10 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
                     Date fechaIni = new Date((String) OrasT.getValueAt(fila, 2));
                     Date fechaFin = new Date((String) OrasT.getValueAt(fila, 3));
                     int numero = PrincipalOriginal.esNum((String) OrasT.getValueAt(fila, 4));
-                    double inversion=esDouble((String) OrasT.getValueAt(fila, 5));
-                    String empresa=(String)OrasT.getValueAt(fila, 6);
-                    int numMaqui=esNum((String)OrasT.getValueAt(fila, 7));
-                    new EditarObra(obra, responsable, fechaIni, fechaFin, numero,inversion,empresa,numMaqui);
+                    double inversion = esDouble((String) OrasT.getValueAt(fila, 5));
+                    String empresa = (String) OrasT.getValueAt(fila, 6);
+                    int numMaqui = esNum((String) OrasT.getValueAt(fila, 7));
+                    new EditarObra(obra, responsable, fechaIni, fechaFin, numero, inversion, empresa, numMaqui);
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Seleccione una Obra");
                 }
@@ -387,7 +389,13 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
 
     private static double esDouble(String cadena) {
         try {
-            double a = Double.parseDouble(cadena.replace(",", ""));
+            Pattern p = Pattern.compile("[$',']");
+            Matcher m = p.matcher(cadena);
+            String remplazado="";
+            if (m.find()) {
+                remplazado = m.replaceAll("");                
+            }
+            double a = Double.parseDouble(remplazado);
             return a;
         } catch (Exception e) {
             return 0;
