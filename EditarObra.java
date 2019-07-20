@@ -67,10 +67,12 @@ public class EditarObra extends JFrame {
         nombresResponsableEditar.setBounds(0, 30, 280, 230);
         DatosObras.add(nombresResponsableEditar);
 
-        JTextField NombreResponsabletxtEditar = new JTextField("");
+        CampoDato NombreResponsabletxtEditar = new CampoDato("");
         NombreResponsabletxtEditar.setForeground(Color.black);
         NombreResponsabletxtEditar.setBounds(69, 135, 120, 30);
         NombreResponsabletxtEditar.setBorder(null);
+        NombreResponsabletxtEditar.setTipo('T');
+        NombreResponsabletxtEditar.setLongitud(20);
         DatosObras.add(NombreResponsabletxtEditar);
 
         JLabel ApellidoResponsablePaternoEditar = new JLabel("Apellido paterno:");
@@ -80,10 +82,12 @@ public class EditarObra extends JFrame {
         ApellidoResponsablePaternoEditar.setBounds(200, 30, 350, 230);
         DatosObras.add(ApellidoResponsablePaternoEditar);
 
-        JTextField ApellidoResponsablePaternotxtEditar = new JTextField("");
+        CampoDato ApellidoResponsablePaternotxtEditar = new CampoDato();
         ApellidoResponsablePaternotxtEditar.setForeground(Color.black);
         ApellidoResponsablePaternotxtEditar.setBounds(322, 135, 120, 30);
         ApellidoResponsablePaternotxtEditar.setBorder(null);
+        ApellidoResponsablePaternotxtEditar.setTipo('T');
+        ApellidoResponsablePaternotxtEditar.setLongitud(20);
         DatosObras.add(ApellidoResponsablePaternotxtEditar);
 
         JLabel ApellidoResponsableMaternoEditar = new JLabel("Apellido materno:");
@@ -93,10 +97,12 @@ public class EditarObra extends JFrame {
         ApellidoResponsableMaternoEditar.setBounds(0, 70, 280, 230);
         DatosObras.add(ApellidoResponsableMaternoEditar);
 
-        JTextField ApellidoResponsableMaternotxtEditar = new JTextField("");
+        CampoDato ApellidoResponsableMaternotxtEditar = new CampoDato();
         ApellidoResponsableMaternotxtEditar.setForeground(Color.black);
         ApellidoResponsableMaternotxtEditar.setBounds(128, 175, 120, 30);
         ApellidoResponsableMaternotxtEditar.setBorder(null);
+        ApellidoResponsableMaternotxtEditar.setTipo('T');
+        ApellidoResponsableMaternotxtEditar.setLongitud(20);
         DatosObras.add(ApellidoResponsableMaternotxtEditar);
 
         JLabel TelefonoEditar = new JLabel("Télefono del responsable:");
@@ -106,10 +112,12 @@ public class EditarObra extends JFrame {
         TelefonoEditar.setBounds(510, 0, 300, 150);
         DatosObras.add(TelefonoEditar);
 
-        JTextField TelefonotxtEditar = new JTextField(String.valueOf(numero));
+        CampoDato TelefonotxtEditar = new CampoDato(String.valueOf(numero));
         TelefonotxtEditar.setForeground(Color.black);
         TelefonotxtEditar.setBounds(700, 62, 110, 30);
         TelefonotxtEditar.setBorder(null);
+        TelefonotxtEditar.setTipo('E');
+        TelefonotxtEditar.setLongitud(15);
         DatosObras.add(TelefonotxtEditar);
 
         JLabel CorreoEditar = new JLabel("Correo electrónico del responsable:");
@@ -132,10 +140,12 @@ public class EditarObra extends JFrame {
         MontoEditar.setBounds(512, 40, 300, 150);
         DatosObras.add(MontoEditar);
 
-        JTextField MontotxtEditar = new JTextField(String.valueOf(inversion));
+        CampoDato MontotxtEditar = new CampoDato(String.valueOf(inversion));
         MontotxtEditar.setForeground(Color.black);
         MontotxtEditar.setBounds(650, 100, 70, 30);
         MontotxtEditar.setBorder(null);
+        MontotxtEditar.setTipo('D');
+        MontotxtEditar.setLongitud(20);
         DatosObras.add(MontotxtEditar);
 
         JLabel FechaInicioEditar = new JLabel("Fecha de inicio de la obra:");
@@ -178,10 +188,12 @@ public class EditarObra extends JFrame {
         CalleEditar.setBounds(514, 65, 300, 300);
         DatosObras.add(CalleEditar);
 
-        JTextField CalletxtEditar = new JTextField("");
+        CampoDato CalletxtEditar = new CampoDato();
         CalletxtEditar.setForeground(Color.black);
         CalletxtEditar.setBounds(560, 200, 170, 30);
         CalletxtEditar.setBorder(null);
+        CalletxtEditar.setTipo('T');
+        CalletxtEditar.setLongitud(30);
         DatosObras.add(CalletxtEditar);
 
         JLabel NumeroEditar = new JLabel("Número:");
@@ -191,10 +203,12 @@ public class EditarObra extends JFrame {
         NumeroEditar.setBounds(790, 65, 300, 300);
         DatosObras.add(NumeroEditar);
 
-        JTextField NumtxtEditar = new JTextField("");
+        CampoDato NumtxtEditar = new CampoDato();
         NumtxtEditar.setForeground(Color.black);
         NumtxtEditar.setBounds(855, 200, 40, 30);
         NumtxtEditar.setBorder(null);
+        NumtxtEditar.setTipo('E');
+        NumtxtEditar.setLongitud(10);
         DatosObras.add(NumtxtEditar);
 
         JLabel coloniaEditar = new JLabel("Colonia:");
@@ -204,10 +218,12 @@ public class EditarObra extends JFrame {
         coloniaEditar.setBounds(980, 65, 300, 300);
         DatosObras.add(coloniaEditar);
 
-        JTextField ColtxtEditar = new JTextField();
+        CampoDato ColtxtEditar = new CampoDato();
         ColtxtEditar.setForeground(Color.black);
         ColtxtEditar.setBounds(1040, 200, 200, 30);
         ColtxtEditar.setBorder(null);
+        ColtxtEditar.setTipo('T');
+        ColtxtEditar.setLongitud(20);
         DatosObras.add(ColtxtEditar);
 
         JLabel MunicipioEditar = new JLabel("Municipio:");
@@ -218,10 +234,12 @@ public class EditarObra extends JFrame {
         DatosObras.add(MunicipioEditar);
 
         //JComboBox Municipiotxt = new JComboBox();
-        JTextField MunicipiotxtEditar = new JTextField();
+        CampoDato MunicipiotxtEditar = new CampoDato();
         MunicipiotxtEditar.setForeground(Color.black);
         MunicipiotxtEditar.setBounds(590, 287, 170, 30);
         MunicipiotxtEditar.setBorder(null);
+        MunicipiotxtEditar.setTipo('T');
+        MunicipiotxtEditar.setLongitud(30);
         DatosObras.add(MunicipiotxtEditar);
 
         JLabel EstadoEditar = new JLabel("Estado:");
@@ -231,10 +249,12 @@ public class EditarObra extends JFrame {
         EstadoEditar.setBounds(790, 150, 100, 300);
         DatosObras.add(EstadoEditar);
 
-        JTextField EstadotxtEditar = new JTextField();
+        CampoDato EstadotxtEditar = new CampoDato();
         EstadotxtEditar.setForeground(Color.black);
         EstadotxtEditar.setBounds(850, 287, 170, 30);
         EstadotxtEditar.setBorder(null);
+        EstadotxtEditar.setTipo('T');
+        EstadotxtEditar.setLongitud(30);
         DatosObras.add(EstadotxtEditar);
 
         ///Agregado
@@ -245,10 +265,12 @@ public class EditarObra extends JFrame {
         NombreObraEditar.setBounds(1030, 150, 300, 300);
         DatosObras.add(NombreObraEditar);
 
-        JTextField NombreObraEditartxt = new JTextField(obra);
+        CampoDato NombreObraEditartxt = new CampoDato(obra);
         NombreObraEditartxt.setForeground(Color.black);
         NombreObraEditartxt.setBounds(1170, 288, 150, 30);
         NombreObraEditartxt.setBorder(null);
+        NombreObraEditartxt.setTipo('T');
+        NombreObraEditartxt.setLongitud(50);
         DatosObras.add(NombreObraEditartxt);
 
         //////////////////////// Termina panel uno empieza panel 2: Datos Maquinaria

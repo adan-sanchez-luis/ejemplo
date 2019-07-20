@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+//import componentetextfield.CampoDato;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -70,33 +71,14 @@ public class EditarMaquinaria extends JFrame {
         ModeloEditar.setBounds(0, 75, 300, 150);
         DatosMaquinaria.add(ModeloEditar);
 
-        JTextField ModelotxtEditar = new JTextField(String.valueOf(modelo));
+        //JTextField ModelotxtEditar = new JTextField(String.valueOf(modelo));        
+        CampoDato ModelotxtEditar = new CampoDato(String.valueOf(modelo));
         ModelotxtEditar.setForeground(Color.black);
         ModelotxtEditar.setBorder(null);
         ModelotxtEditar.setBounds(164, 140, 200, 30);
+        ModelotxtEditar.setTipo('E');
+        ModelotxtEditar.setLongitud(15);
         DatosMaquinaria.add(ModelotxtEditar);
-        ModelotxtEditar.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent ke) {
-                char letra = ke.getKeyChar();
-                if (!Character.isDigit(letra) && letra != '.') {
-                    ke.consume();
-                }
-                if (letra == '.' || ModelotxtEditar.getText().contains(".")) {
-                    ke.consume();
-                }
-            }
-
-            @Override
-            public void keyPressed(KeyEvent ke) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void keyReleased(KeyEvent ke) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
 
         JLabel TipoEditar = new JLabel("Tipo de máquina:");
         TipoEditar.setForeground(Color.white);
@@ -118,33 +100,13 @@ public class EditarMaquinaria extends JFrame {
         CostoEditar.setBounds(0, 170, 300, 150);
         DatosMaquinaria.add(CostoEditar);
 
-        JTextField CostoTxtEditar = new JTextField(String.valueOf(precioRenta));
+        CampoDato CostoTxtEditar=new CampoDato(String.valueOf(precioRenta));
         CostoTxtEditar.setForeground(Color.black);
         CostoTxtEditar.setBorder(null);
-        CostoTxtEditar.setBounds(161, 238, 200, 30);
+        CostoTxtEditar.setBounds(161, 238, 200, 30);        
+        CostoTxtEditar.setTipo('D');
+        CostoTxtEditar.setLongitud(15);
         DatosMaquinaria.add(CostoTxtEditar);
-        CostoTxtEditar.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent ke) {
-                char letra = ke.getKeyChar();
-                if (!Character.isDigit(letra) && letra != '.') {
-                    ke.consume();
-                }
-                if (letra == '.' && CostoTxtEditar.getText().contains(".")) {
-                    ke.consume();
-                }
-            }
-
-            @Override
-            public void keyPressed(KeyEvent ke) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void keyReleased(KeyEvent ke) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
 
         JLabel MatriculaEditar = new JLabel("Matricula:");
         MatriculaEditar.setForeground(Color.white);
