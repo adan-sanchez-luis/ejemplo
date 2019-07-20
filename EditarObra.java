@@ -21,7 +21,7 @@ import java.util.Date;
 
 public class EditarObra extends JFrame {
 
-    EditarObra(String obra,String responsable,Date fechaIni,Date fechaFin,int numero,double inversion,String empresa,int numMaqui) {
+    EditarObra(String obra,String responsable,Date fechaIni,Date fechaFin,double numero,double inversion,String empresa,int numMaqui) {
 
         setSize(1366, 768);
         setTitle("Editar obras");

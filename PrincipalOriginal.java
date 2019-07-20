@@ -266,7 +266,7 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
                     String responsable = (String) OrasT.getValueAt(fila, 1);
                     Date fechaIni = new Date((String) OrasT.getValueAt(fila, 2));
                     Date fechaFin = new Date((String) OrasT.getValueAt(fila, 3));
-                    int numero = PrincipalOriginal.esNum((String) OrasT.getValueAt(fila, 4));
+                    double numero = (double) OrasT.getValueAt(fila, 4);
                     double inversion = esDouble((String) OrasT.getValueAt(fila, 5));
                     String empresa = (String) OrasT.getValueAt(fila, 6);
                     int numMaqui = esNum((String) OrasT.getValueAt(fila, 7));

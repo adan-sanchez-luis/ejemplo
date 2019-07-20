@@ -117,7 +117,7 @@ public class AgregarObra extends JFrame {
         Telefonotxt.setForeground(Color.black);
         Telefonotxt.setBounds(700, 62, 110, 30);
         Telefonotxt.setBorder(null);
-        Telefonotxt.setTipo('D');
+        Telefonotxt.setTipo('E');
         Telefonotxt.setLongitud(15);
         DatosObras.add(Telefonotxt);
 
