@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -73,6 +75,28 @@ public class EditarMaquinaria extends JFrame {
         ModelotxtEditar.setBorder(null);
         ModelotxtEditar.setBounds(164, 140, 200, 30);
         DatosMaquinaria.add(ModelotxtEditar);
+        ModelotxtEditar.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent ke) {
+                char letra = ke.getKeyChar();
+                if (!Character.isDigit(letra) && letra != '.') {
+                    ke.consume();
+                }
+                if (letra == '.' || ModelotxtEditar.getText().contains(".")) {
+                    ke.consume();
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent ke) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
 
         JLabel TipoEditar = new JLabel("Tipo de máquina:");
         TipoEditar.setForeground(Color.white);
@@ -99,6 +123,28 @@ public class EditarMaquinaria extends JFrame {
         CostoTxtEditar.setBorder(null);
         CostoTxtEditar.setBounds(161, 238, 200, 30);
         DatosMaquinaria.add(CostoTxtEditar);
+        CostoTxtEditar.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent ke) {
+                char letra = ke.getKeyChar();
+                if (!Character.isDigit(letra) && letra != '.') {
+                    ke.consume();
+                }
+                if (letra == '.' && CostoTxtEditar.getText().contains(".")) {
+                    ke.consume();
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent ke) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void keyReleased(KeyEvent ke) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
 
         JLabel MatriculaEditar = new JLabel("Matricula:");
         MatriculaEditar.setForeground(Color.white);
@@ -164,7 +210,7 @@ public class EditarMaquinaria extends JFrame {
                 } else {
 
                 }*/
-                
+
             }
         });
 
