@@ -246,7 +246,7 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         Agregar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                new AgregarObra();
+                new NuevoAgregarObra();
             }
         });
 

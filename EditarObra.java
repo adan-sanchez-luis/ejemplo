@@ -127,7 +127,7 @@ public class EditarObra extends JFrame {
         CorreoEditar.setBounds(840, 0, 300, 150);
         DatosObras.add(CorreoEditar);
 
-        JTextField CorreotxtEditar = new JTextField("");
+        JTextField CorreotxtEditar = new JTextField();
         CorreotxtEditar.setForeground(Color.black);
         CorreotxtEditar.setBounds(1100, 62, 210, 30);
         CorreotxtEditar.setBorder(null);
