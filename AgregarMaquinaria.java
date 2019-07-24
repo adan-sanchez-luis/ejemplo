@@ -24,7 +24,7 @@ public class AgregarMaquinaria extends JFrame {
         setSize(860, 500);
         setTitle("Agregar maquinarias");
         setResizable(false);
-        //setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
 
         JPanel DatosMaquinaria = new JPanel();
@@ -153,6 +153,7 @@ public class AgregarMaquinaria extends JFrame {
         DatosMaquinaria.add(AgregarMaquina);
         AgregarMaquina.addActionListener(new ActionListener() {
             @Override
+            //asignacion de funcionalidad del boton agregar maquinaria
             public void actionPerformed(ActionEvent ae) {
                 String nombre = NombreMaquinatxt.getText();
                 int modelo =Integer.parseInt(Modelotxt.getText());

@@ -70,8 +70,7 @@ public class EditarMaquinaria extends JFrame {
         ModeloEditar.setFont(fuenteModelo);
         ModeloEditar.setBounds(0, 75, 300, 150);
         DatosMaquinaria.add(ModeloEditar);
-
-        //JTextField ModelotxtEditar = new JTextField(String.valueOf(modelo));        
+        
         CampoDato ModelotxtEditar = new CampoDato(String.valueOf(modelo));
         ModelotxtEditar.setForeground(Color.black);
         ModelotxtEditar.setBorder(null);

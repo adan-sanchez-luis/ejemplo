@@ -16,8 +16,25 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import com.toedter.calendar.JCalendar;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class NuevoAgregarObra extends JFrame {
+
+    PreparedStatement psd; // variable para la BDD	
 
     NuevoAgregarObra() {
         setSize(1366, 768);
@@ -137,6 +154,20 @@ public class NuevoAgregarObra extends JFrame {
         empresatxt.setBorder(null);
         empresatxt.setBounds(860, 80, 200, 30);
         DatosObras.add(empresatxt);
+
+        JLabel cliente = new JLabel("Cliente:");
+        cliente.setForeground(Color.white);
+        Font fuenteCliente = new Font("Arial", Font.BOLD, 20);
+        cliente.setFont(fuenteCliente);
+        cliente.setBounds(1065, 80, 300, 20);
+        DatosObras.add(cliente);
+
+        List<Object> allClientes = recuperarDatos("SELECT * FROM CLIENTE", 2);
+        JComboBox clienteC = new JComboBox(allClientes.toArray());
+        clienteC.setForeground(Color.black);
+        clienteC.setBorder(null);
+        clienteC.setBounds(1140, 80, 200, 30);
+        DatosObras.add(clienteC);
 
         JLabel DomicilioEditar = new JLabel("Ubicación de la obra:");
         DomicilioEditar.setForeground(Color.decode("#049cff"));
@@ -317,19 +348,119 @@ public class NuevoAgregarObra extends JFrame {
 
         JButton AgregarInformaciónEditar = new JButton("Guardar información");
         AgregarInformaciónEditar.setBackground(Color.black);
-        AgregarInformaciónEditar.setBounds(550, 640, 300, 50);
+        AgregarInformaciónEditar.setBounds(380, 640, 300, 50);
         Font fontBoton = new Font("Arial", Font.BOLD, 20);
         AgregarInformaciónEditar.setFont(fontBoton);
         AgregarInformaciónEditar.setBorder(new ComponenteBotonRedondo(50));
         AgregarInformaciónEditar.setForeground(Color.decode("#049cff"));
         DatosObras.add(AgregarInformaciónEditar);
+        AgregarInformaciónEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                SimpleDateFormat ff = new SimpleDateFormat("YYYY/MM/dd");
+                try {
+                    Connection cn;
+                    cn = getConexion();
+                    // primer consulta a la tabla Clientes --->
+                    psd = cn.prepareStatement("INSERT INTO CLIENTE (NOMBREC,CALLE,COLONIA,MUNICIPIO,ESTADO,CORREO,TELEFONO) VALUES(?,?,?,?,?,?,?)");
+
+                    psd.setString(2, NombreObratxt.getText());
+                    psd.setString(3, empresatxt.getText());
+                    psd.setString(4, NombreResponsabletxt.getText());
+                    psd.setString(5, ApellidoResponsablePaternotxt.getText());
+                    psd.setString(6, ApellidoResponsableMaternotxt.getText());
+                    psd.setDate(7, Date.valueOf(ff.format(FechaI)));
+                    psd.setDate(9, Date.valueOf(ff.format(FechaF)));
+                    psd.setDouble(10, Double.parseDouble(Montotxt.getText()));
+                    String consulta = "SELECT * FROM CLIENTE WHERE NOMBRE_CLIENTE = " + clienteC.getSelectedItem();
+                    psd.setInt(11, (int) recuperarDato(consulta, 1));
+                    //psd.setBlob(11, blob);
+
+                    int res = psd.executeUpdate();
+                    if (res < 0) {
+                        JOptionPane.showMessageDialog(null, "No se pudo añadir el registro");
+                    }
+                    cn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(NuevoAgregarObra.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+        JButton AgregarCliente = new JButton("Agregar Cliente ");
+        AgregarCliente.setBackground(Color.black);
+        AgregarCliente.setBounds(720, 640, 300, 50);
+        Font fontBotonCliente = new Font("Arial", Font.BOLD, 20);
+        AgregarCliente.setFont(fontBotonCliente);
+        AgregarCliente.setBorder(new ComponenteBotonRedondo(50));
+        AgregarCliente.setForeground(Color.decode("#049cff"));
+        DatosObras.add(AgregarCliente);
+        AgregarCliente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                AgregarCliente obj = new AgregarCliente();
+                List<Object> auxiliar = recuperarDatos("SELECT * FROM CLIENTE", 2);
+                JComboBox aux=new JComboBox(auxiliar.toArray());
+                clienteC.removeAllItems();
+                while (!auxiliar.isEmpty()) {
+                    String au = (String) auxiliar.remove(0);
+                    clienteC.addItem(au);
+                }
+            }
+        });
 
         JLabel background = new JLabel();
 
         background.add(DatosObras);
         add(background);
         setVisible(true);
+    }
 
+    //Aqui hacemos la conexión a la BDD
+    public Connection getConexion() {
+        Connection conexion = null;
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            conexion = (Connection) DriverManager.getConnection("jdbc:derby://localhost:1527/Constructura", "admi", "admi");
+            /*JOptionPane.showMessageDialog(null,
+                    "¡Registro guardado exitosamente!");*/
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    "Hubo un error en la instalacion\n" + e.toString());
+            //  System.err.println("Hubo un error en la instalacion " + e);
+        }
+        return conexion;
+    }
+
+    public Object recuperarDato(String consulta, int columna) {
+        Object dato = null;
+        try {
+            Connection con = getConexion();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(consulta);
+            dato = rs.getObject(columna);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
+        }
+        return dato;
+    }
+
+    public List<Object> recuperarDatos(String consulta, int columna) {
+        List<Object> datos = new ArrayList<Object>();
+        try {
+            Connection con = getConexion();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(consulta);
+            int i = 0;
+            while (rs.next()) {
+                String dat = rs.getString(columna);
+                i++;
+                datos.add(dat);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
+        }
+        return datos;
     }
 
     public static void main(String[] args) {
