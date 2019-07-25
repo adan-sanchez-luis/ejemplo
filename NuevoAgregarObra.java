@@ -18,6 +18,8 @@ import javax.swing.border.Border;
 import com.toedter.calendar.JCalendar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -25,6 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,7 @@ public class NuevoAgregarObra extends JFrame {
     PreparedStatement psd; // variable para la BDD	
 
     NuevoAgregarObra() {
-        setSize(1366, 768);
+        setSize(1385, 768);
         setTitle("Agregar obras");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -357,24 +360,29 @@ public class NuevoAgregarObra extends JFrame {
         AgregarInformaciónEditar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                SimpleDateFormat ff = new SimpleDateFormat("YYYY/MM/dd");
+                SimpleDateFormat ff = new SimpleDateFormat("YYYY-MM-dd");
                 try {
                     Connection cn;
                     cn = getConexion();
                     // primer consulta a la tabla Clientes --->
-                    psd = cn.prepareStatement("INSERT INTO CLIENTE (NOMBREC,CALLE,COLONIA,MUNICIPIO,ESTADO,CORREO,TELEFONO) VALUES(?,?,?,?,?,?,?)");
+                    psd = cn.prepareStatement("INSERT INTO OBRA (NOMBRE_OBRA,NOMBRE_EMPRESA,NOMBRE_RESPONSABLE,AP_PAT,AP_MAT,FECHA_INICIO,"
+                            + "DURACION_MESES,FECHA_FIN,INVERSION,ID_CLIENTE) VALUES(?,?,?,?,?,?,?,?,?,?)");
 
-                    psd.setString(2, NombreObratxt.getText());
-                    psd.setString(3, empresatxt.getText());
-                    psd.setString(4, NombreResponsabletxt.getText());
-                    psd.setString(5, ApellidoResponsablePaternotxt.getText());
-                    psd.setString(6, ApellidoResponsableMaternotxt.getText());
-                    psd.setDate(7, Date.valueOf(ff.format(FechaI)));
-                    psd.setDate(9, Date.valueOf(ff.format(FechaF)));
-                    psd.setDouble(10, Double.parseDouble(Montotxt.getText()));
-                    String consulta = "SELECT * FROM CLIENTE WHERE NOMBRE_CLIENTE = " + clienteC.getSelectedItem();
-                    psd.setInt(11, (int) recuperarDato(consulta, 1));
-                    //psd.setBlob(11, blob);
+                    psd.setString(1, NombreObratxt.getText());
+                    psd.setString(2, empresatxt.getText());
+                    psd.setString(3, NombreResponsabletxt.getText());
+                    psd.setString(4, ApellidoResponsablePaternotxt.getText());
+                    psd.setString(5, ApellidoResponsableMaternotxt.getText());
+                    psd.setDate(6, Date.valueOf(ff.format(FechaI.getDate())));
+                    psd.setInt(7, 12);
+                    psd.setDate(8, Date.valueOf(ff.format(FechaF.getDate())));
+                    psd.setDouble(9, Double.parseDouble(Montotxt.getText()));
+                    System.out.println(clienteC.getSelectedItem());
+                    String consulta = "SELECT * FROM CLIENTE WHERE NOMBRE_CLIENTE = '" + clienteC.getSelectedItem()+"'";
+                    int a=(int) recuperarDato(consulta, 1);
+                    System.out.println(a);
+                    psd.setInt(10, a);
+                    //psd.setBlob(;
 
                     int res = psd.executeUpdate();
                     if (res < 0) {
@@ -399,8 +407,22 @@ public class NuevoAgregarObra extends JFrame {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 AgregarCliente obj = new AgregarCliente();
+
+            }
+        });
+
+        ImageIcon recarga = new ImageIcon("C:\\Users\\Adan Sanchez\\Documents\\NetBeansProjects\\Fun_Ing_Soft\\src\\neo5.png");
+        Image img = recarga.getImage();
+        Image temp_img = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        recarga = new ImageIcon(temp_img);
+        JButton recargar = new JButton(recarga);
+        recargar.setBounds(1340, 82, 25, 25);
+        DatosObras.add(recargar);
+        recargar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
                 List<Object> auxiliar = recuperarDatos("SELECT * FROM CLIENTE", 2);
-                JComboBox aux=new JComboBox(auxiliar.toArray());
+                JComboBox aux = new JComboBox(auxiliar.toArray());
                 clienteC.removeAllItems();
                 while (!auxiliar.isEmpty()) {
                     String au = (String) auxiliar.remove(0);
@@ -434,11 +456,19 @@ public class NuevoAgregarObra extends JFrame {
 
     public Object recuperarDato(String consulta, int columna) {
         Object dato = null;
+        System.out.println("1");
         try {
+            Object aux;
             Connection con = getConexion();
+            System.out.println("2");
             Statement stmt = con.createStatement();
+            System.out.println("3");
             ResultSet rs = stmt.executeQuery(consulta);
-            dato = rs.getObject(columna);
+            System.out.println("4");
+            aux = rs.getString(columna);
+            System.out.println("5");
+            dato=aux;
+            System.out.println(dato);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
         }

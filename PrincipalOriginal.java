@@ -6,6 +6,10 @@ import javax.swing.*;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -263,6 +267,8 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
                 try {
                     int fila = OrasT.getSelectedRow();
                     String obra = (String) OrasT.getValueAt(fila, 0);
+                    String consultaObra = "SELECT * FROM OBRA WHERE NOMBRE_OBRA = " + obra;
+                    int id_Obra = (int) recuperarDato(consultaObra, 1);
                     String responsable = (String) OrasT.getValueAt(fila, 1);
                     Date fechaIni = new Date((String) OrasT.getValueAt(fila, 2));
                     Date fechaFin = new Date((String) OrasT.getValueAt(fila, 3));
@@ -270,9 +276,9 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
                     double inversion = esDouble((String) OrasT.getValueAt(fila, 5));
                     String empresa = (String) OrasT.getValueAt(fila, 6);
                     int numMaqui = esNum((String) OrasT.getValueAt(fila, 7));
-                    new EditarObra(obra, responsable, fechaIni, fechaFin, numero, inversion, empresa, numMaqui);
+                    new EditarObra(id_Obra, obra, responsable, fechaIni, fechaFin, numero, inversion, empresa, numMaqui);
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Seleccione una Obra\n"+e.toString());
+                    JOptionPane.showMessageDialog(null, "Seleccione una Obra\n" + e.toString());
                 }
             }
         });
@@ -298,10 +304,18 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         Clientes.setLayout(null);
         Clientes.setBackground(Color.black);
 
-        String[] Cabecera = {"NOMBRE(S)", "CALLE", "NÚMERO", "COLONIA", "MUNICIPIO", "ESTADO", "CORREO ELECTRÓNICO", "NÚMERO TELEFÓNICO"};
+        /*String[] Cabecera = {"NOMBRE(S)", "CALLE", "NÚMERO", "COLONIA", "MUNICIPIO", "ESTADO", "CORREO ELECTRÓNICO", "NÚMERO TELEFÓNICO"};
         String[][] datos = {{"Juan de Dios", "La soledad", "16", "Trinidad de Viguera", "Oaxaca de juárez", "Oaxaca", "emmanuel1102@hotmail.com", "71826371"}};
-        JTable MaquinasT = new JTable(datos, Cabecera);
-        JScrollPane sc = new JScrollPane(MaquinasT);
+         */
+        TablaClientes modelo = new TablaClientes("jdbc:derby://localhost:1527/Constructura", "admi", "admi");
+        JTable ClientesT = new JTable(modelo);
+        //La reorganizacion de las colunmas se desactiva
+        ClientesT.getTableHeader().setReorderingAllowed(false);
+        //La redimencion de las colunmas se desactiva
+        ClientesT.getTableHeader().setResizingAllowed(false);
+        //Se Restinge la seleccion de las filas a solo una
+        ClientesT.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane sc = new JScrollPane(ClientesT);
         sc.setVisible(true);
         sc.setBounds(10, 70, 1336, 410);
         Clientes.add(sc);
@@ -391,9 +405,9 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         try {
             Pattern p = Pattern.compile("[$',']");
             Matcher m = p.matcher(cadena);
-            String remplazado=cadena;
+            String remplazado = cadena;
             if (m.find()) {
-                remplazado = m.replaceAll("");                
+                remplazado = m.replaceAll("");
             }
             double a = Double.parseDouble(remplazado);
             return a;
@@ -401,5 +415,42 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, e.toString());
             return 0;
         }
+    }
+
+    //Aqui hacemos la conexión a la BDD
+    public Connection getConexion() {
+        Connection conexion = null;
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            conexion = (Connection) DriverManager.getConnection("jdbc:derby://localhost:1527/Constructura", "admi", "admi");
+            /*JOptionPane.showMessageDialog(null,
+                    "¡Registro guardado exitosamente!");*/
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    "Hubo un error en la instalacion\n" + e.toString());
+            //  System.err.println("Hubo un error en la instalacion " + e);
+        }
+        return conexion;
+    }
+
+    public Object recuperarDato(String consulta, int columna) {
+        Object dato = null;
+        System.out.println("1");
+        try {
+            Object aux;
+            Connection con = getConexion();
+            System.out.println("2");
+            Statement stmt = con.createStatement();
+            System.out.println("3");
+            ResultSet rs = stmt.executeQuery(consulta);
+            System.out.println("4");
+            aux = rs.getString(columna);
+            System.out.println("5");
+            dato = aux;
+            System.out.println(dato);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
+        }
+        return dato;
     }
 }

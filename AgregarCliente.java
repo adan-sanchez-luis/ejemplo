@@ -239,7 +239,7 @@ public class AgregarCliente extends JFrame {
                     cn = getConexion();
                     // primer consulta a la tabla Clientes --->
                     psd = cn.prepareStatement("INSERT INTO admi.CLIENTE (NOMBRE_CLIENTE,NUMERO_CALLE,CALLE,COLONIA,MUNICIPIO,ESTADO,CORREO,TELEFONO) VALUES(?,?,?,?,?,?,?,?)");
-
+                    
                     psd.setString(1, NombreResponsabletxt.getText()+" "+ApellidoResponsablePaternotxt.getText()+" "+ApellidoResponsableMaternotxt.getText());
                     psd.setString(2, Numtxt.getText());
                     psd.setString(3, Calletxt.getText());
