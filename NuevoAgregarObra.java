@@ -39,9 +39,7 @@ import java.util.logging.Logger;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class NuevoAgregarObra extends JFrame {
-
-    PreparedStatement psd; // variable para la BDD	
+public class NuevoAgregarObra extends JFrame {	
 
     NuevoAgregarObra() {
         setSize(1385, 768);
@@ -453,9 +451,10 @@ public class NuevoAgregarObra extends JFrame {
                 try {
                     Connection cn;
                     cn = getConexion();
-                    // primer consulta a la tabla Clientes --->
+                    PreparedStatement psd; // variable para la BDD
+                    // primer consulta a la tabla OBRA --->
                     psd = cn.prepareStatement("INSERT INTO OBRA (NOMBRE_OBRA,NOMBRE_EMPRESA,NOMBRE_RESPONSABLE,AP_PAT,AP_MAT,FECHA_INICIO,"
-                            + "DURACION_MESES,FECHA_FIN,INVERSION,ID_CLIENTE,TELEFONO) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+                            + "DURACION_MESES,FECHA_FIN,INVERSION,ID_CLIENTE,TELEFONO) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
 
                     psd.setString(1, NombreObratxt.getText());//nombre obra
                     psd.setString(2, empresatxt.getText());//nombre empresa
@@ -470,7 +469,12 @@ public class NuevoAgregarObra extends JFrame {
                     int a = Integer.parseInt(recuperarDato(consulta, "IDCLIENTE"));
                     psd.setInt(10, a);//id del cliente
                     psd.setString(11, Telefonotxt.getText());//telefono del responsable                                        
+                    psd.setString(12, Telefonotxt.getText());//telefono del responsable                                        
 
+                    PreparedStatement segundaConexiuon=cn.prepareStatement("INSERT INTO MAQUINARIA (ESTADO_MAQ) VALUES ('EN USO')");
+                    String modicar[] = list.getSelectedValue().replaceAll(" ", "").split("/");
+                    
+                    
                     int res = psd.executeUpdate();
                     if (res < 0) {
                         JOptionPane.showMessageDialog(null, "No se pudo añadir el registro");

@@ -18,12 +18,14 @@ import java.util.ArrayList;
 
 public class EditarObra extends JFrame {
 
-    EditarObra(int id_Obra, String obra, String responsable, Date fechaIni, Date fechaFin, String numero, double inversion, String empresa, int numMaqui) {
+    EditarObra(int id_Obra) {
 
         setSize(1386, 768);
         setTitle("Editar obras");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setVisible(true);
+        
+        Object [] datosRecuperados=recuperarDatosObra("SELECT * FROM OBRA WHERE CLAVEOB = '"+id_Obra+"'");
 
         JPanel DatosObras = new JPanel();
         DatosObras.setLayout(null);
@@ -44,7 +46,7 @@ public class EditarObra extends JFrame {
         nombresResponsableEditar.setBounds(0, 40, 300, 20);
         DatosObras.add(nombresResponsableEditar);
 
-        CampoDato NombreResponsabletxtEditar = new CampoDato("");
+        CampoDato NombreResponsabletxtEditar = new CampoDato((String)datosRecuperados[2]);
         NombreResponsabletxtEditar.setForeground(Color.black);
         NombreResponsabletxtEditar.setBounds(105, 40, 200, 30);
         NombreResponsabletxtEditar.setBorder(null);
@@ -59,7 +61,7 @@ public class EditarObra extends JFrame {
         ApellidoResponsablePaternoEditar.setBounds(315, 40, 300, 20);
         DatosObras.add(ApellidoResponsablePaternoEditar);
 
-        CampoDato ApellidoResponsablePaternotxtEditar = new CampoDato();
+        CampoDato ApellidoResponsablePaternotxtEditar = new CampoDato((String)datosRecuperados[3]);
         ApellidoResponsablePaternotxtEditar.setForeground(Color.black);
         ApellidoResponsablePaternotxtEditar.setBounds(480, 40, 200, 30);
         ApellidoResponsablePaternotxtEditar.setBorder(null);
@@ -74,7 +76,7 @@ public class EditarObra extends JFrame {
         ApellidoResponsableMaternoEditar.setBounds(690, 40, 300, 20);
         DatosObras.add(ApellidoResponsableMaternoEditar);
 
-        CampoDato ApellidoResponsableMaternotxtEditar = new CampoDato();
+        CampoDato ApellidoResponsableMaternotxtEditar = new CampoDato((String)datosRecuperados[4]);
         ApellidoResponsableMaternotxtEditar.setForeground(Color.black);
         ApellidoResponsableMaternotxtEditar.setBounds(860, 40, 200, 30);
         ApellidoResponsableMaternotxtEditar.setBorder(null);
@@ -89,7 +91,7 @@ public class EditarObra extends JFrame {
         MontoEditar.setBounds(1065, 40, 300, 20);
         DatosObras.add(MontoEditar);
 
-        CampoDato MontotxtEditar = new CampoDato(String.valueOf(inversion));
+        CampoDato MontotxtEditar = new CampoDato((String)datosRecuperados[8]);
         MontotxtEditar.setForeground(Color.black);
         MontotxtEditar.setBounds(1250, 40, 70, 30);
         MontotxtEditar.setBorder(null);
@@ -104,7 +106,7 @@ public class EditarObra extends JFrame {
         TelefonoEditar.setBounds(0, 80, 300, 20);
         DatosObras.add(TelefonoEditar);
 
-        CampoDato TelefonotxtEditar = new CampoDato(numero);
+        CampoDato TelefonotxtEditar = new CampoDato((String)datosRecuperados[7]);
         TelefonotxtEditar.setForeground(Color.black);
         TelefonotxtEditar.setBounds(107, 80, 200, 30);
         TelefonotxtEditar.setBorder(null);
@@ -119,7 +121,7 @@ public class EditarObra extends JFrame {
         CorreoEditar.setBounds(410, 80, 300, 20);
         DatosObras.add(CorreoEditar);
 
-        JTextField CorreotxtEditar = new JTextField("");
+        JTextField CorreotxtEditar = new JTextField((String)datosRecuperados[9]);
         CorreotxtEditar.setForeground(Color.black);
         CorreotxtEditar.setBounds(480, 80, 200, 30);
         CorreotxtEditar.setBorder(null);
@@ -132,7 +134,7 @@ public class EditarObra extends JFrame {
         empresaEditar.setBounds(770, 80, 300, 20);
         DatosObras.add(empresaEditar);
 
-        JTextField empresatxtEditar = new JTextField(empresa);
+        JTextField empresatxtEditar = new JTextField((String)datosRecuperados[1]);
         empresatxtEditar.setForeground(Color.black);
         empresatxtEditar.setBorder(null);
         empresatxtEditar.setBounds(860, 80, 200, 30);
@@ -148,11 +150,11 @@ public class EditarObra extends JFrame {
         java.util.List<Object> allClientes = recuperarDatos("SELECT * FROM CLIENTE", 2);
         JComboBox clienteCEditado = new JComboBox(allClientes.toArray());
         for (int i = 0; i < allClientes.size(); i++) {
-            if (allClientes.get(i).equals(responsable)) {
+            if (allClientes.get(i).equals((String)datosRecuperados[2]+" "+(String)datosRecuperados[3]+" "+(String)datosRecuperados[4])) {
                 clienteCEditado.setSelectedIndex(i);
             }
         }
-        clienteCEditado.setSelectedItem(obra);
+        //clienteCEditado.setSelectedItem(obra);
         clienteCEditado.setForeground(Color.black);
         clienteCEditado.setBorder(null);
         clienteCEditado.setBounds(1140, 80, 200, 30);
@@ -249,7 +251,7 @@ public class EditarObra extends JFrame {
         NombreObraEditar.setBounds(315, 190, 300, 20);
         DatosObras.add(NombreObraEditar);
 
-        CampoDato NombreObraEditartxt = new CampoDato(obra);
+        CampoDato NombreObraEditartxt = new CampoDato((String)datosRecuperados[0]);
         NombreObraEditartxt.setForeground(Color.black);
         NombreObraEditartxt.setBounds(500, 190, 200, 30);
         NombreObraEditartxt.setBorder(null);
@@ -316,7 +318,7 @@ public class EditarObra extends JFrame {
         FechaInicioEditar.setBounds(0, 230, 300, 300);
         DatosObras.add(FechaInicioEditar);
 
-        JCalendar FechaIEditar = new JCalendar(fechaIni);
+        JCalendar FechaIEditar = new JCalendar(java.sql.Date.valueOf((String)datosRecuperados[5]));
         FechaIEditar.setForeground(Color.black);
         FechaIEditar.setBorder(null);
         FechaIEditar.setBounds(0, 400, 390, 200);
@@ -329,7 +331,7 @@ public class EditarObra extends JFrame {
         FechaFinalEditar.setBounds(478, 230, 300, 300);
         DatosObras.add(FechaFinalEditar);
 
-        JCalendar FechaFEditar = new JCalendar(fechaFin);
+        JCalendar FechaFEditar = new JCalendar(java.sql.Date.valueOf((String)datosRecuperados[6]));
         FechaFEditar.setForeground(Color.black);
         FechaFEditar.setBorder(null);
         FechaFEditar.setBounds(480, 400, 390, 200);
@@ -439,6 +441,30 @@ public class EditarObra extends JFrame {
                 i++;
                 datos.add(dat);
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
+        }
+        return datos;
+    }
+
+    public Object[] recuperarDatosObra(String consulta) {
+        Object[] datos = new Object[12];
+        try {
+            Connection con = getConexion();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(consulta);
+            rs.next();
+            datos[0] = rs.getString(2);//nombre de la obra
+            datos[1]=rs.getString(3);//nombre de la empresa
+            datos[2] = rs.getString(4);//nombre del responsable
+            datos[3] = rs.getString(5);//apellido paterno del responsable
+            datos[4] = rs.getString(6);//apellido materno del responsable
+            datos[5] = String.valueOf(rs.getDate(7));//fecha inicio
+            datos[6] = String.valueOf(rs.getDate(9));//fecha final
+            datos[8] = String.valueOf(rs.getDouble(10));//inversion
+            datos[7] = rs.getString(13);//numero del responsable
+            datos[9] = rs.getString(14);//correo del responsable
+            //datos[i][7]=String.valueOf(rs.getInt(11));//numero de maquinarias rentadas
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
         }

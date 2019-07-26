@@ -267,23 +267,22 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         Editar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                try {
+                //try {
                     int fila = OrasT.getSelectedRow();
                     String obra = (String) OrasT.getValueAt(fila, 0);
-                    //String consultaObra = "SELECT * FROM OBRA WHERE NOMBRE_OBRA = '" + obra+"'";
-                    //int id_Obra = Integer.parseInt(recuperarDato(consultaObra, "CLAVEOB"));
-                    int id_Obra =1;
-                    String responsable = (String) OrasT.getValueAt(fila, 1);
+                    String consultaObra = "SELECT * FROM OBRA WHERE NOMBRE_OBRA = '" + obra+"'";
+                    int id_Obra = Integer.parseInt(recuperarDato(consultaObra, "CLAVEOB"));
+                    /*String responsable = (String) OrasT.getValueAt(fila, 1);
                     Date fechaIni = new Date((String) OrasT.getValueAt(fila, 2));
                     Date fechaFin = new Date((String) OrasT.getValueAt(fila, 3));
                     String numero = (String) OrasT.getValueAt(fila, 4);
                     double inversion = esDouble((String) OrasT.getValueAt(fila, 5));
                     String empresa = (String) OrasT.getValueAt(fila, 6);
-                    int numMaqui = esNum((String) OrasT.getValueAt(fila, 7));
-                    new EditarObra(id_Obra, obra, responsable, fechaIni, fechaFin, numero, inversion, empresa, numMaqui);
-                } catch (Exception e) {
+                    int numMaqui = esNum((String) OrasT.getValueAt(fila, 7));*/
+                    new EditarObra(id_Obra);
+                /*} catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Seleccione una Obra\n" + e.toString());
-                }
+                }*/
             }
         });
 
