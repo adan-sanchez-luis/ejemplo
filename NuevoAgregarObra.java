@@ -18,6 +18,8 @@ import javax.swing.border.Border;
 import com.toedter.calendar.JCalendar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.FileInputStream;
 import java.sql.Blob;
 import java.sql.Connection;
@@ -34,6 +36,8 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class NuevoAgregarObra extends JFrame {
 
@@ -165,7 +169,8 @@ public class NuevoAgregarObra extends JFrame {
         cliente.setBounds(1065, 80, 300, 20);
         DatosObras.add(cliente);
 
-        List<Object> allClientes = recuperarDatos("SELECT * FROM CLIENTE", 2);
+        //se rellena el comboBox con los clientes ya registrados
+        List<Object> allClientes = recuperarDatos("SELECT * FROM CLIENTE", "NOMBRE_CLIENTE");
         JComboBox clienteC = new JComboBox(allClientes.toArray());
         clienteC.setForeground(Color.black);
         clienteC.setBorder(null);
@@ -231,7 +236,6 @@ public class NuevoAgregarObra extends JFrame {
         Municipio.setBounds(1080, 150, 300, 20);
         DatosObras.add(Municipio);
 
-        //JComboBox Municipiotxt = new JComboBox();
         CampoDato Municipiotxt = new CampoDato();
         Municipiotxt.setForeground(Color.black);
         Municipiotxt.setBounds(1180, 150, 170, 30);
@@ -278,6 +282,16 @@ public class NuevoAgregarObra extends JFrame {
         anuncioMaquinaria.setBounds(400, 100, 700, 300);
         DatosObras.add(anuncioMaquinaria);
 
+        JButton agregarMaquinaria = new JButton("Agregar");
+        agregarMaquinaria.setBackground(Color.black);
+        agregarMaquinaria.setBounds(1000, 330, 200, 30);
+        Font fontAgregar = new Font("Arial", Font.BOLD, 20);
+        agregarMaquinaria.setFont(fontAgregar);
+        agregarMaquinaria.setBorder(new ComponenteBotonRedondo(50));
+        agregarMaquinaria.setForeground(Color.decode("#049cff"));
+        agregarMaquinaria.setEnabled(false);
+        DatosObras.add(agregarMaquinaria);
+
         JLabel TipoMaquinaria = new JLabel("Tipo de maquinaria:");
         TipoMaquinaria.setForeground(Color.white);
         Font fuenteMaquina = new Font("Arial", Font.BOLD, 20);
@@ -285,8 +299,9 @@ public class NuevoAgregarObra extends JFrame {
         TipoMaquinaria.setBounds(0, 220, 300, 150);
         DatosObras.add(TipoMaquinaria);
 
-        ////El cliente dijo que hasta el momento tiene 5 tractores,2 volteos,6 retroexcabadoras, 1 montacargas
-        JComboBox TipoMC = new JComboBox();
+        //se agregan los tipos de maquinaria al comboBox
+        List<Object> allTipos = recuperarDatos("SELECT TIPO_MAQ FROM MAQUINARIA GROUP BY TIPO_MAQ", "TIPO_MAQ");
+        JComboBox TipoMC = new JComboBox(allTipos.toArray());
         TipoMC.setForeground(Color.black);
         TipoMC.setBorder(null);
         TipoMC.setBounds(190, 280, 200, 30);
@@ -299,7 +314,10 @@ public class NuevoAgregarObra extends JFrame {
         ModeloMaquinaria.setBounds(455, 220, 300, 150);
         DatosObras.add(ModeloMaquinaria);
 
-        JComboBox MaquinariaC = new JComboBox();
+        //se agregan los modelos de la maquina inicial
+        String consultaModelos = "SELECT MODELO_MAQ FROM MAQUINARIA WHERE TIPO_MAQ = '" + TipoMC.getSelectedItem() + "' GROUP BY MODELO_MAQ";
+        List<Object> allModelos = recuperarDatos(consultaModelos, "MODELO_MAQ");
+        JComboBox MaquinariaC = new JComboBox(allModelos.toArray());
         MaquinariaC.setForeground(Color.black);
         MaquinariaC.setBounds(692, 280, 200, 30);
         MaquinariaC.setBorder(null);
@@ -312,16 +330,85 @@ public class NuevoAgregarObra extends JFrame {
         CantidadMaquinas.setBounds(980, 220, 500, 150);
         DatosObras.add(CantidadMaquinas);
 
-        JSpinner CantidadSpiner = new JSpinner();
+        //se limita el spinner con la cantidad de maquinaria disponible del tipo y modelo indicado
+        String consultaCantidad = "SELECT TIPO_MAQ,MODELO_MAQ,COUNT(MODELO_MAQ) FROM MAQUINARIA"
+                + " WHERE TIPO_MAQ = '" + TipoMC.getSelectedItem() + "' AND MODELO_MAQ = " + MaquinariaC.getSelectedItem() + " AND ESTADO_MAQ = 'DISPONIBLE' "
+                + "GROUP BY TIPO_MAQ,MODELO_MAQ";
+        int disponibles = Integer.parseInt(recuperarDato(consultaCantidad, "3"));
+        JSpinner CantidadSpiner = new JSpinner(new SpinnerNumberModel(0, 0, disponibles, 1));
         CantidadSpiner.setForeground(Color.black);
         CantidadSpiner.setBounds(1299, 280, 50, 30);
         CantidadSpiner.setBorder(null);
         DatosObras.add(CantidadSpiner);
 
+        //cada vez que cambie de un tipo de maquinaria se actualizara el modelo automaticamente y el spinner delimitante de ellos
+        TipoMC.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent ie) {
+                String consultaModelosNueva = "SELECT MODELO_MAQ FROM MAQUINARIA WHERE TIPO_MAQ = '" + TipoMC.getSelectedItem() + "' GROUP BY MODELO_MAQ";
+                List<Object> auxiliar = recuperarDatos(consultaModelosNueva, "MODELO_MAQ");
+                MaquinariaC.setModel(new DefaultComboBoxModel(auxiliar.toArray()));
+                String consultaCantidadNueva = "SELECT TIPO_MAQ,MODELO_MAQ,COUNT(MODELO_MAQ) FROM MAQUINARIA"
+                        + " WHERE TIPO_MAQ = '" + TipoMC.getSelectedItem() + "' AND MODELO_MAQ = " + MaquinariaC.getSelectedItem() + " AND ESTADO_MAQ = 'DISPONIBLE' "
+                        + "GROUP BY TIPO_MAQ,MODELO_MAQ";
+                int disponibles = Integer.parseInt(recuperarDato(consultaCantidadNueva, "3"));
+                CantidadSpiner.setModel(new SpinnerNumberModel(0, 0, disponibles, 1));
+                agregarMaquinaria.setEnabled(false);
+            }
+        });
+
+        //se actualiza el spinner delimitante del modelo indicado
+        MaquinariaC.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent ie) {
+                String consultaCantidadNueva = "SELECT TIPO_MAQ,MODELO_MAQ,COUNT(MODELO_MAQ) FROM MAQUINARIA"
+                        + " WHERE TIPO_MAQ = '" + TipoMC.getSelectedItem() + "' AND MODELO_MAQ = " + MaquinariaC.getSelectedItem() + " AND ESTADO_MAQ = 'DISPONIBLE' "
+                        + "GROUP BY TIPO_MAQ,MODELO_MAQ";
+                int disponibles = Integer.parseInt(recuperarDato(consultaCantidadNueva, "3"));
+                CantidadSpiner.setModel(new SpinnerNumberModel(0, 0, disponibles, 1));
+                agregarMaquinaria.setEnabled(false);
+            }
+        });
+
         JPanel imagen = new JPanel();
         imagen.setBackground(Color.decode("#049cff"));
-        imagen.setBounds(950, 400, 400, 200);
+        //imagen.setBounds(950, 400, 400, 200);
+        imagen.setBounds(850, 400, 200, 200);
         DatosObras.add(imagen);
+
+        DefaultListModel<String> lista = new DefaultListModel();
+        JList<String> list = new JList<>(lista);
+        list.setBounds(1100, 400, 250, 200);
+        DatosObras.add(list);
+
+        //se agrega a una lista las maquinas requeridas 
+        agregarMaquinaria.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String tipo = (String) TipoMC.getSelectedItem();
+                String modelo = (String) MaquinariaC.getSelectedItem();
+                int cantidad = (int) CantidadSpiner.getValue();
+                lista.addElement(String.format("%s    /     %s    /     %d", tipo, modelo, cantidad));
+                
+                SpinnerNumberModel aux = (SpinnerNumberModel) CantidadSpiner.getModel();
+                int menos = (int) aux.getMaximum() - (int) CantidadSpiner.getValue();
+                CantidadSpiner.setModel(new SpinnerNumberModel(0, 0, menos, 1));
+                if ((int) CantidadSpiner.getValue() == 0) {
+                    agregarMaquinaria.setEnabled(false);
+                }
+            }
+        });
+
+        CantidadSpiner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent ce) {
+                if ((int) CantidadSpiner.getValue() == 0) {
+                    agregarMaquinaria.setEnabled(false);
+                } else {
+                    agregarMaquinaria.setEnabled(true);
+                }
+            }
+        });
 
         JLabel FechaInicio = new JLabel("Fecha de inicio de la obra:");
         FechaInicio.setForeground(Color.white);
@@ -340,13 +427,15 @@ public class NuevoAgregarObra extends JFrame {
         FechaFinal.setForeground(Color.white);
         Font fuenteFechaF = new Font("Arial", Font.BOLD, 20);
         FechaFinal.setFont(fuenteFechaF);
-        FechaFinal.setBounds(478, 230, 300, 300);
+        //FechaFinal.setBounds(478, 230, 300, 300);
+        FechaFinal.setBounds(400, 230, 300, 300);
         DatosObras.add(FechaFinal);
 
         JCalendar FechaF = new JCalendar();
         FechaF.setForeground(Color.black);
         FechaF.setBorder(null);
-        FechaF.setBounds(480, 400, 390, 200);
+        //  FechaF.setBounds(480, 400, 390, 200);
+        FechaF.setBounds(402, 400, 390, 200);
         DatosObras.add(FechaF);
 
         JButton AgregarInformaciónEditar = new JButton("Guardar información");
@@ -366,23 +455,21 @@ public class NuevoAgregarObra extends JFrame {
                     cn = getConexion();
                     // primer consulta a la tabla Clientes --->
                     psd = cn.prepareStatement("INSERT INTO OBRA (NOMBRE_OBRA,NOMBRE_EMPRESA,NOMBRE_RESPONSABLE,AP_PAT,AP_MAT,FECHA_INICIO,"
-                            + "DURACION_MESES,FECHA_FIN,INVERSION,ID_CLIENTE) VALUES(?,?,?,?,?,?,?,?,?,?)");
+                            + "DURACION_MESES,FECHA_FIN,INVERSION,ID_CLIENTE,TELEFONO) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 
-                    psd.setString(1, NombreObratxt.getText());
-                    psd.setString(2, empresatxt.getText());
-                    psd.setString(3, NombreResponsabletxt.getText());
-                    psd.setString(4, ApellidoResponsablePaternotxt.getText());
-                    psd.setString(5, ApellidoResponsableMaternotxt.getText());
-                    psd.setDate(6, Date.valueOf(ff.format(FechaI.getDate())));
+                    psd.setString(1, NombreObratxt.getText());//nombre obra
+                    psd.setString(2, empresatxt.getText());//nombre empresa
+                    psd.setString(3, NombreResponsabletxt.getText());//nombre responsable
+                    psd.setString(4, ApellidoResponsablePaternotxt.getText());//apellido paterno responsable
+                    psd.setString(5, ApellidoResponsableMaternotxt.getText());//apellido materno responsable
+                    psd.setDate(6, Date.valueOf(ff.format(FechaI.getDate())));//fecha inicio de la obra
                     psd.setInt(7, 12);
-                    psd.setDate(8, Date.valueOf(ff.format(FechaF.getDate())));
-                    psd.setDouble(9, Double.parseDouble(Montotxt.getText()));
-                    System.out.println(clienteC.getSelectedItem());
-                    String consulta = "SELECT * FROM CLIENTE WHERE NOMBRE_CLIENTE = '" + clienteC.getSelectedItem()+"'";
-                    int a=(int) recuperarDato(consulta, 1);
-                    System.out.println(a);
-                    psd.setInt(10, a);
-                    //psd.setBlob(;
+                    psd.setDate(8, Date.valueOf(ff.format(FechaF.getDate())));//fecha final de la obra
+                    psd.setDouble(9, Double.parseDouble(Montotxt.getText()));//monto o invercion de la obra
+                    String consulta = "SELECT * FROM CLIENTE WHERE NOMBRE_CLIENTE = '" + clienteC.getSelectedItem() + "'";
+                    int a = Integer.parseInt(recuperarDato(consulta, "IDCLIENTE"));
+                    psd.setInt(10, a);//id del cliente
+                    psd.setString(11, Telefonotxt.getText());//telefono del responsable                                        
 
                     int res = psd.executeUpdate();
                     if (res < 0) {
@@ -406,7 +493,7 @@ public class NuevoAgregarObra extends JFrame {
         AgregarCliente.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                AgregarCliente obj = new AgregarCliente();
+                new AgregarCliente();
 
             }
         });
@@ -421,13 +508,8 @@ public class NuevoAgregarObra extends JFrame {
         recargar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                List<Object> auxiliar = recuperarDatos("SELECT * FROM CLIENTE", 2);
-                JComboBox aux = new JComboBox(auxiliar.toArray());
-                clienteC.removeAllItems();
-                while (!auxiliar.isEmpty()) {
-                    String au = (String) auxiliar.remove(0);
-                    clienteC.addItem(au);
-                }
+                List<Object> auxiliar = recuperarDatos("SELECT * FROM CLIENTE", "NOMBRE_CLIENTE");
+                clienteC.setModel(new DefaultComboBoxModel(auxiliar.toArray()));
             }
         });
 
@@ -454,28 +536,25 @@ public class NuevoAgregarObra extends JFrame {
         return conexion;
     }
 
-    public Object recuperarDato(String consulta, int columna) {
-        Object dato = null;
-        System.out.println("1");
+    //recupera un dato en espesifico de la base de datos
+    public String recuperarDato(String consulta, String columna) {
+        String dato = null;
         try {
-            Object aux;
             Connection con = getConexion();
-            System.out.println("2");
             Statement stmt = con.createStatement();
-            System.out.println("3");
             ResultSet rs = stmt.executeQuery(consulta);
-            System.out.println("4");
-            aux = rs.getString(columna);
-            System.out.println("5");
-            dato=aux;
-            System.out.println(dato);
+            while (rs.next()) {
+                String aux = String.valueOf(rs.getObject(columna));
+                dato = aux;
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
         }
         return dato;
     }
 
-    public List<Object> recuperarDatos(String consulta, int columna) {
+    //recupera una lista de datos de la bsae de datos de solo una columna
+    public List<Object> recuperarDatos(String consulta, String columna) {
         List<Object> datos = new ArrayList<Object>();
         try {
             Connection con = getConexion();

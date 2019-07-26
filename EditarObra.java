@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class EditarObra extends JFrame {
 
-    EditarObra(int id_Obra,String obra, String responsable, Date fechaIni, Date fechaFin, String numero, double inversion, String empresa, int numMaqui) {
+    EditarObra(int id_Obra, String obra, String responsable, Date fechaIni, Date fechaFin, String numero, double inversion, String empresa, int numMaqui) {
 
         setSize(1386, 768);
         setTitle("Editar obras");
@@ -137,7 +137,7 @@ public class EditarObra extends JFrame {
         empresatxtEditar.setBorder(null);
         empresatxtEditar.setBounds(860, 80, 200, 30);
         DatosObras.add(empresatxtEditar);
-        
+
         JLabel cliente = new JLabel("Cliente:");
         cliente.setForeground(Color.white);
         Font fuenteCliente = new Font("Arial", Font.BOLD, 20);
@@ -233,7 +233,7 @@ public class EditarObra extends JFrame {
         EstadoEditar.setBounds(0, 190, 300, 20);
         DatosObras.add(EstadoEditar);
 
-       CampoDato EstadotxtEditar = new CampoDato();
+        CampoDato EstadotxtEditar = new CampoDato();
         EstadotxtEditar.setForeground(Color.black);
         EstadotxtEditar.setBounds(105, 190, 200, 30);
         EstadotxtEditar.setBorder(null);
@@ -344,29 +344,29 @@ public class EditarObra extends JFrame {
         AgregarInformaciónEditar.setForeground(Color.decode("#049cff"));
         DatosObras.add(AgregarInformaciónEditar);
         AgregarInformaciónEditar.addActionListener(new ActionListener() {
-            @Override            
+            @Override
             public void actionPerformed(ActionEvent ae) {
-                SimpleDateFormat ff=new SimpleDateFormat("yyyy-MM-dd");
-                String consultaCliente = "SELECT * FROM CLIENTE WHERE NOMBRE_CLIENTE = '" + clienteCEditado.getSelectedItem()+"'";
-                int Cliente=(int) recuperarDato(consultaCliente, 1);
-                String consultaObra = "SELECT * FROM OBRA WHERE NOMBRE_OBRA = " +id_Obra ;
-                int Obra=(int) recuperarDato(consultaObra, 1);
+                SimpleDateFormat ff = new SimpleDateFormat("yyyy-MM-dd");
+                String consultaCliente = "SELECT * FROM CLIENTE WHERE NOMBRE_CLIENTE = '" + clienteCEditado.getSelectedItem() + "'";
+                int Cliente = Integer.parseInt(recuperarDato(consultaCliente, "IDCLIENTE"));
+                String consultaObra = "SELECT * FROM OBRA WHERE NOMBRE_OBRA = " + id_Obra;
+                int Obra = Integer.parseInt(recuperarDato(consultaObra, "CLAVEOB"));
                 String EditarObra = "UPDATE OBRA SET "
-                                    + "NOMBRE_OBRA='"+NombreObraEditartxt.getText()+"',NOMBRE_EMPRESA="+empresatxtEditar.getText()
-                        +",NOMBRE_RESPONSABLE="+NombreResponsabletxtEditar.getText()+",AP_PAT="+ApellidoResponsablePaternotxtEditar.getText()
-                        +",AP_MAT="+ApellidoResponsableMaternotxtEditar.getText()+",FECHA_INICIO="+ff.format(FechaIEditar.getDate())
-                        +",FECHA_FIN="+ff.format(FechaFEditar.getDate())+",INVERSION="+MontotxtEditar.getText()+",ID_CLIENTE="+Cliente
-                        +"\nwhere CLAVEOB="+Obra;
-                            try {
-                                Connection con=getConexion();
-                                Statement stmt = (Statement) con.createStatement();
-                                stmt.executeUpdate(EditarObra);
-                            } catch (SQLException ex) {
-                                System.err.println("Error al insertar " + ex);
-                            }
+                        + "NOMBRE_OBRA='" + NombreObraEditartxt.getText() + "',NOMBRE_EMPRESA=" + empresatxtEditar.getText()
+                        + ",NOMBRE_RESPONSABLE=" + NombreResponsabletxtEditar.getText() + ",AP_PAT=" + ApellidoResponsablePaternotxtEditar.getText()
+                        + ",AP_MAT=" + ApellidoResponsableMaternotxtEditar.getText() + ",FECHA_INICIO=" + ff.format(FechaIEditar.getDate())
+                        + ",FECHA_FIN=" + ff.format(FechaFEditar.getDate()) + ",INVERSION=" + MontotxtEditar.getText() + ",ID_CLIENTE=" + Cliente
+                        + ",TELEFONO=" + TelefonotxtEditar.getText() + "\nwhere CLAVEOB=" + Obra;
+                try {
+                    Connection con = getConexion();
+                    Statement stmt = (Statement) con.createStatement();
+                    stmt.executeUpdate(EditarObra);
+                } catch (SQLException ex) {
+                    System.err.println("Error al insertar " + ex);
+                }
             }
         });
-        
+
         ImageIcon recarga = new ImageIcon("C:\\Users\\Adan Sanchez\\Documents\\NetBeansProjects\\Fun_Ing_Soft\\src\\neo5.png");
         Image img = recarga.getImage();
         Image temp_img = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
@@ -394,8 +394,8 @@ public class EditarObra extends JFrame {
         setVisible(true);
 
     }
-    
-     //Aqui hacemos la conexión a la BDD
+
+    //Aqui hacemos la conexión a la BDD
     public Connection getConexion() {
         Connection conexion = null;
         try {
@@ -410,22 +410,17 @@ public class EditarObra extends JFrame {
         }
         return conexion;
     }
-    
-    public Object recuperarDato(String consulta, int columna) {
-        Object dato = null;
-        System.out.println("1");
+
+    public String recuperarDato(String consulta, String columna) {
+        String dato = null;
         try {
-            Object aux;
             Connection con = getConexion();
-            System.out.println("2");
             Statement stmt = con.createStatement();
-            System.out.println("3");
             ResultSet rs = stmt.executeQuery(consulta);
-            System.out.println("4");
-            aux = rs.getString(columna);
-            System.out.println("5");
-            dato=aux;
-            System.out.println(dato);
+            while (rs.next()) {
+                String aux = String.valueOf(rs.getObject(columna));
+                dato = aux;
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
         }

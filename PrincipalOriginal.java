@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -208,8 +209,10 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         Obras.setBackground(Color.black);
 
         String[] Cabecera = {"NOMBRE DE LA OBRA", "NOMBRE DEL RESPONSABLE", "FECHA DE INICIO", "FECHA DE FINALIZACIÓN", "NÚMERO DEL RESPONSABLE", "INVERSIÓN $", "NOMBRE DE LA EMPRESA", "NUM DE MÁQUINAS RENTADAS"};
-        String[][] datos = {{"Carretera Esmeralda", "Juan de Dios", "01/02/16", "01/03/16", "9566162", "100,000", "Construcciones El chapo", "3"}};
-        DefaultTableModel modelo = new DefaultTableModel(datos, Cabecera) {
+        String consulta="SELECT * FROM OBRA";
+        //String[][] datos = {{"Carretera Esmeralda", "Juan de Dios", "01/02/16", "01/03/16", "9566162", "100,000", "Construcciones El chapo", "3"}};
+        DefaultTableModel modelo = new DefaultTableModel(recuperarDatosObra(consulta),Cabecera) {
+        //DefaultTableModel modelo = new DefaultTableModel(datos,Cabecera) {
             //La edicion de la tabla esta desactivada
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
@@ -267,8 +270,9 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
                 try {
                     int fila = OrasT.getSelectedRow();
                     String obra = (String) OrasT.getValueAt(fila, 0);
-                    String consultaObra = "SELECT * FROM OBRA WHERE NOMBRE_OBRA = " + obra;
-                    int id_Obra = (int) recuperarDato(consultaObra, 1);
+                    //String consultaObra = "SELECT * FROM OBRA WHERE NOMBRE_OBRA = '" + obra+"'";
+                    //int id_Obra = Integer.parseInt(recuperarDato(consultaObra, "CLAVEOB"));
+                    int id_Obra =1;
                     String responsable = (String) OrasT.getValueAt(fila, 1);
                     Date fechaIni = new Date((String) OrasT.getValueAt(fila, 2));
                     Date fechaFin = new Date((String) OrasT.getValueAt(fila, 3));
@@ -433,24 +437,76 @@ public class PrincipalOriginal extends JFrame implements ActionListener {
         return conexion;
     }
 
-    public Object recuperarDato(String consulta, int columna) {
-        Object dato = null;
-        System.out.println("1");
+    public String recuperarDato(String consulta, String columna) {
+        String dato = null;
         try {
-            Object aux;
             Connection con = getConexion();
-            System.out.println("2");
             Statement stmt = con.createStatement();
-            System.out.println("3");
             ResultSet rs = stmt.executeQuery(consulta);
-            System.out.println("4");
-            aux = rs.getString(columna);
-            System.out.println("5");
-            dato = aux;
-            System.out.println(dato);
+            while (rs.next()) {
+                String aux = String.valueOf(rs.getObject(columna));                
+                dato = aux;
+            }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
         }
         return dato;
+    }
+
+    public java.util.List<Object> recuperarDatos(String consulta, int columna) {
+        java.util.List<Object> datos = new ArrayList<Object>();
+        try {
+            Connection con = getConexion();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(consulta);
+            int i = 0;
+            while (rs.next()) {
+                String dat = rs.getString(columna);
+                i++;
+                datos.add(dat);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
+        }
+        return datos;
+    }
+    
+        public Object[][] recuperarDatosObra(String consulta) {
+        Object[][] datos = new Object[getTotalFilas(consulta)][8];
+        try {
+            Connection con = getConexion();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(consulta);
+            int i=0;
+            while (rs.next()) {
+                datos[i][0]=rs.getString(2);//nombre de la obra
+                datos[i][1]=rs.getString(4)+" "+rs.getString(5)+" "+rs.getString(6);//nombre del responsable
+                datos[i][2]=String.valueOf(rs.getDate(7));//fecha inicio
+                datos[i][3]=String.valueOf(rs.getDate(9));//fecha final
+                datos[i][4]=rs.getString(13);//numero del responsable
+                datos[i][5]=String.valueOf(rs.getDouble(10));//inversion
+                datos[i][6]=rs.getString(4);//nombre de la empresa
+                //datos[i][7]=String.valueOf(rs.getInt(11));//numero de maquinarias rentadas
+                i++;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al recuperar los datos de la base de datos\n" + e.toString());
+        }
+        return datos;
+    }
+        
+        public int getTotalFilas(String consulta) {
+        int count = 0;
+        try {
+            Connection con=getConexion();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(consulta);
+            while (rs.next()) {
+                count += 1;
+            }
+        } catch (Exception e) {
+            System.err.println("Error al listar " + e);
+        }
+        return count;
     }
 }
